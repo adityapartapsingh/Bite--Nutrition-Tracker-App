@@ -778,6 +778,52 @@
   transform: translateY(-1px);
 }
 
+/* ─── Quick Suggestions ─── */
+.quick-suggest { position: relative; margin-top: -8px; margin-bottom: 16px; z-index: var(--z-dropdown); }
+.quick-suggest__list { background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: var(--radius-lg); overflow: hidden; max-height: 320px; overflow-y: auto; box-shadow: var(--shadow-lg); }
+.quick-suggest__section-title { padding: 10px 16px 6px; font-size: 0.68rem; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; }
+.quick-suggest__item { display: flex; align-items: center; gap: 12px; padding: 10px 16px; cursor: pointer; transition: all var(--transition-fast); animation: fadeInUp 0.2s ease forwards; opacity: 0; }
+.quick-suggest__item:hover, .quick-suggest__item--focused { background: var(--bg-glass-hover); }
+.quick-suggest__item-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.quick-suggest__item-info { flex: 1; min-width: 0; }
+.quick-suggest__item-name { font-size: 0.88rem; font-weight: 600; color: var(--text-primary); text-transform: capitalize; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.quick-suggest__item-name mark { background: none; color: var(--accent-green); font-weight: 700; }
+.quick-suggest__item-meta { font-size: 0.7rem; color: var(--text-tertiary); }
+.quick-suggest__item-cals { font-size: 0.78rem; font-weight: 700; color: var(--accent-green); flex-shrink: 0; }
+.quick-suggest__quick-add { width: 28px; height: 28px; border-radius: var(--radius-full); background: rgba(74, 222, 128, 0.1); border: 1px solid rgba(74, 222, 128, 0.2); color: var(--accent-green); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: all var(--transition-fast); font-size: 0.8rem; }
+.quick-suggest__quick-add:hover { background: rgba(74, 222, 128, 0.2); transform: scale(1.1); }
+
+/* ─── Manual Entry ─── */
+.manual-entry { animation: fadeInUp 0.3s ease; }
+.manual-entry__form { display: flex; flex-direction: column; gap: 16px; }
+.manual-entry__field { display: flex; flex-direction: column; gap: 6px; }
+.manual-entry__label { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; }
+.manual-entry__input { background: var(--bg-input); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 12px 14px; color: var(--text-primary); font-size: 0.95rem; font-family: inherit; transition: all var(--transition-normal); outline: none; }
+.manual-entry__input:focus { border-color: var(--border-focus); background: var(--bg-input-focus); box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.08); }
+.manual-entry__input::placeholder { color: var(--text-tertiary); }
+.manual-entry__row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.manual-entry__macros-title { font-size: 0.72rem; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; margin: 8px 0 4px; }
+.manual-entry__meal-select { margin-top: 8px; }
+.manual-entry__meal-title { font-size: 0.8rem; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+.manual-entry__meal-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.manual-entry__meal-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 8px; background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: var(--radius-md); color: var(--text-secondary); font-size: 0.75rem; font-family: inherit; cursor: pointer; transition: all var(--transition-fast); }
+.manual-entry__meal-btn--active { background: rgba(74, 222, 128, 0.1); border-color: var(--accent-green); color: var(--accent-green); }
+.manual-entry__meal-icon { font-size: 1.2rem; }
+.manual-entry__submit { width: 100%; margin-top: 16px; padding: 14px; background: var(--gradient-calories); border: none; border-radius: var(--radius-lg); color: var(--text-inverse); font-size: 1rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: all var(--transition-normal); box-shadow: 0 4px 16px rgba(74, 222, 128, 0.3); }
+.manual-entry__submit:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(74, 222, 128, 0.4); }
+.manual-entry__submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.manual-entry__error { color: var(--accent-red); font-size: 0.82rem; margin-top: -8px; }
+
+/* ─── Frequent Foods Chips ─── */
+.add-food__frequent { margin-bottom: 16px; }
+.add-food__frequent-title { font-size: 0.72rem; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+.add-food__frequent-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; -ms-overflow-style: none; }
+.add-food__frequent-scroll::-webkit-scrollbar { display: none; }
+.add-food__frequent-chip { display: flex; align-items: center; gap: 6px; padding: 8px 14px; background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: var(--radius-full); white-space: nowrap; cursor: pointer; transition: all var(--transition-fast); flex-shrink: 0; }
+.add-food__frequent-chip:hover { background: rgba(74, 222, 128, 0.08); border-color: rgba(74, 222, 128, 0.25); }
+.add-food__frequent-chip-name { font-size: 0.82rem; font-weight: 600; color: var(--text-primary); text-transform: capitalize; }
+.add-food__frequent-chip-cals { font-size: 0.7rem; color: var(--accent-green); font-weight: 700; }
+
 /* ─── Animations ─── */
 @keyframes spin {
   to { transform: rotate(360deg); }

@@ -30,6 +30,7 @@
   --accent-red: #f87171;
   --accent-pink: #f472b6;
   --accent-yellow: #fbbf24;
+  --accent-water: #38bdf8;
 
   /* ─── Gradients ─── */
   --gradient-calories: linear-gradient(135deg, #4ade80, #2dd4bf);
@@ -38,6 +39,8 @@
   --gradient-carbs: linear-gradient(135deg, #a78bfa, #c084fc);
   --gradient-primary: linear-gradient(135deg, #4ade80, #2dd4bf);
   --gradient-danger: linear-gradient(135deg, #f87171, #ef4444);
+  --gradient-water: linear-gradient(135deg, #38bdf8, #0ea5e9);
+  --gradient-insight: linear-gradient(135deg, #fbbf24, #f59e0b);
 
   /* ─── Glow Effects ─── */
   --glow-green: 0 0 20px rgba(74, 222, 128, 0.3);
@@ -45,6 +48,7 @@
   --glow-orange: 0 0 20px rgba(251, 146, 60, 0.3);
   --glow-purple: 0 0 20px rgba(167, 139, 250, 0.3);
   --glow-red: 0 0 20px rgba(248, 113, 113, 0.3);
+  --glow-water: 0 0 20px rgba(56, 189, 248, 0.3);
 
   /* ─── Border Radius ─── */
   --radius-xs: 6px;

@@ -4,6 +4,8 @@ import { calculateDayTotals, formatDate, offsetDate, isToday, formatDayOfWeek } 
 import CalorieRing from './CalorieRing';
 import MacroBar from './MacroBar';
 import MealSection from './MealSection';
+import WaterTracker from './WaterTracker';
+import NutritionInsight from './NutritionInsight';
 import GoalSettings from '../Settings/GoalSettings';
 import './Dashboard.css';
 
@@ -115,6 +117,12 @@ function Dashboard({ onNavigateToAdd, onSelectMeal }) {
           </div>
         </div>
       )}
+
+      {/* Water Tracker */}
+      <WaterTracker />
+
+      {/* Nutrition Insight */}
+      <NutritionInsight macros={totals} goal={dailyGoal} />
 
       {/* Macro Bars */}
       <h2 className="dashboard__section-title">Macros</h2>

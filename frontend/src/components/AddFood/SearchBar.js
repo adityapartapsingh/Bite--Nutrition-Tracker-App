@@ -1,6 +1,6 @@
 import React from 'react';
 
-function SearchBar({ value, onChange, onClear, loading }) {
+function SearchBar({ value, onChange, onClear, loading, onFocus, onBlur, inputRef }) {
   return (
     <div className="search-bar" id="search-bar">
       <div className="search-bar__input-wrapper">
@@ -10,12 +10,15 @@ function SearchBar({ value, onChange, onClear, loading }) {
         </svg>
 
         <input
+          ref={inputRef}
           className="search-bar__input"
           id="food-search-input"
           type="text"
           placeholder="Search foods... e.g. chicken breast 200g"
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          onFocus={onFocus}
+          onBlur={onBlur}
           autoComplete="off"
           autoFocus
         />

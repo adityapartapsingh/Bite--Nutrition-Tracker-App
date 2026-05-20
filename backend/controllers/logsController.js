@@ -14,6 +14,17 @@ exports.getLogs = (req, res) => {
   }
 };
 
+exports.getRecentFoods = (req, res) => {
+  try {
+    const rows = FoodLog.getRecentUnique(req.user.id, 20);
+    const foods = rows.map((row) => FoodLog.toJSON(row));
+    return res.json({ success: true, foods });
+  } catch (err) {
+    console.error('Get recent foods error:', err);
+    return res.status(500).json({ success: false, error: 'Failed to fetch recent foods' });
+  }
+};
+
 exports.getLogRange = (req, res) => {
   try {
     const { startDate, endDate } = req.params;

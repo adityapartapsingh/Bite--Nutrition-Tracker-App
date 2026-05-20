@@ -21,6 +21,19 @@ const FoodLog = {
     `).all(userId, startDate, endDate);
   },
 
+  getRecentUnique(userId, limit = 20) {
+    return db.prepare(`
+      SELECT food_name, brand, serving_size, serving_size_g,
+             calories, protein, fat, saturated_fat, carbs, sugar, fiber, sodium,
+             MAX(created_at) as last_used
+      FROM food_logs
+      WHERE user_id = ?
+      GROUP BY food_name, brand
+      ORDER BY last_used DESC
+      LIMIT ?
+    `).all(userId, limit);
+  },
+
   create(userId, { date, mealType, food }) {
     return db.prepare(`
       INSERT INTO food_logs

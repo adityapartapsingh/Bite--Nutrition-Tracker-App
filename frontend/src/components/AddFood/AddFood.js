@@ -4,8 +4,11 @@ import SearchBar from './SearchBar';
 import BarcodeScanner from './BarcodeScanner';
 import FoodCard from './FoodCard';
 import FoodDetail from './FoodDetail';
+import QuickSuggestions from './QuickSuggestions';
+import ManualEntry from './ManualEntry';
 import { searchFood, lookupBarcode } from '../../services/api';
 import { useNutrition } from '../../context/NutritionContext';
+import { searchPopularFoods } from '../../utils/popularFoods';
 
 function AddFood({ initialMeal }) {
   const { state, addFood } = useNutrition();
@@ -18,6 +21,9 @@ function AddFood({ initialMeal }) {
   const [scannerActive, setScannerActive] = useState(false);
   const [recentlyAdded, setRecentlyAdded] = useState([]);
   const [toast, setToast] = useState(null);
+  
+  const [searchFocused, setSearchFocused] = useState(false);
+  const [suggestedFoods, setSuggestedFoods] = useState([]);
 
   const [debounceTimer, setDebounceTimer] = useState(null);
 
@@ -29,6 +35,9 @@ function AddFood({ initialMeal }) {
   const handleSearchChange = useCallback((value) => {
     setSearchQuery(value);
     setError(null);
+
+    const popularMatches = searchPopularFoods(value);
+    setSuggestedFoods(popularMatches);
 
     if (debounceTimer) clearTimeout(debounceTimer);
 
@@ -58,6 +67,7 @@ function AddFood({ initialMeal }) {
   const handleSearchClear = () => {
     setSearchQuery('');
     setResults([]);
+    setSuggestedFoods([]);
     setError(null);
     setLoading(false);
     if (debounceTimer) clearTimeout(debounceTimer);
@@ -145,6 +155,18 @@ function AddFood({ initialMeal }) {
           </svg>
           Scan
         </button>
+        <button
+          className={`add-food__tab ${activeSubTab === 'manual' ? 'add-food__tab--active' : ''}`}
+          id="tab-manual"
+          onClick={() => handleTabSwitch('manual')}
+          type="button"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 20h9" />
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+          </svg>
+          Manual
+        </button>
       </div>
 
       {/* Recently added in this session */}
@@ -174,6 +196,17 @@ function AddFood({ initialMeal }) {
             onChange={handleSearchChange}
             onClear={handleSearchClear}
             loading={loading}
+            onFocus={() => setSearchFocused(true)}
+            onBlur={() => setTimeout(() => setSearchFocused(false), 200)}
+          />
+
+          <QuickSuggestions 
+            visible={searchFocused && (!searchQuery.trim() || (searchQuery.trim() && results.length === 0))}
+            query={searchQuery}
+            recent={!searchQuery.trim() ? state.recentFoods : null}
+            suggestions={suggestedFoods}
+            onSelect={handleFoodSelect}
+            onQuickAdd={(food) => handleAddToMeal(food, initialMeal || 'breakfast', 1)}
           />
 
           {error && (
@@ -187,7 +220,7 @@ function AddFood({ initialMeal }) {
             </div>
           )}
 
-          {!loading && !error && results.length === 0 && searchQuery.trim() && (
+          {!loading && !error && results.length === 0 && searchQuery.trim() && !searchFocused && (
             <div className="add-food__empty" id="search-empty">
               <span className="add-food__empty-icon">🔍</span>
               <p>No results found for "{searchQuery}"</p>
@@ -195,8 +228,28 @@ function AddFood({ initialMeal }) {
             </div>
           )}
 
-          {!loading && !error && results.length === 0 && !searchQuery.trim() && (
+          {!loading && !error && results.length === 0 && !searchQuery.trim() && !searchFocused && (
             <div className="add-food__search-prompt" id="search-prompt">
+              
+              {/* Frequently Logged Chips */}
+              {state.recentFoods?.length > 0 && (
+                <div className="add-food__frequent">
+                  <h3 className="add-food__frequent-title">Frequently Logged</h3>
+                  <div className="add-food__frequent-scroll">
+                    {state.recentFoods.slice(0, 8).map((food, i) => (
+                      <div 
+                        key={`freq-${i}`} 
+                        className="add-food__frequent-chip"
+                        onClick={() => handleFoodSelect(food)}
+                      >
+                        <span className="add-food__frequent-chip-name">{food.name}</span>
+                        <span className="add-food__frequent-chip-cals">{Math.round(food.calories)} kcal</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <span className="add-food__search-prompt-icon">🍎</span>
               <p className="add-food__search-prompt-text">Search for any food</p>
               <p className="add-food__search-prompt-hint">Try "chicken breast" or "200g rice"</p>
@@ -265,6 +318,13 @@ function AddFood({ initialMeal }) {
               <span>{error}</span>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Manual Tab */}
+      {activeSubTab === 'manual' && (
+        <div className="add-food__manual-panel">
+          <ManualEntry initialMeal={initialMeal} />
         </div>
       )}
 

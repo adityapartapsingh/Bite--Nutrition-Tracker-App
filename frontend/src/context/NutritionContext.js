@@ -19,6 +19,8 @@ function saveToStorage(state) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       dailyGoal: state.dailyGoal,
       logs: state.logs,
+      recentFoods: state.recentFoods,
+      waterIntake: state.waterIntake,
     }));
   } catch (e) { /* ignore */ }
 }
@@ -27,9 +29,11 @@ function saveToStorage(state) {
 function getInitialState() {
   const saved = loadFromStorage();
   return {
-    dailyGoal: saved?.dailyGoal || { calories: 2000, protein: 150, fat: 65, carbs: 250 },
+    dailyGoal: saved?.dailyGoal || { calories: 2000, protein: 150, fat: 65, carbs: 250, waterGoal: 8 },
     selectedDate: getTodayKey(),
     logs: saved?.logs || {},
+    recentFoods: saved?.recentFoods || [],
+    waterIntake: saved?.waterIntake || {},
     syncing: false,
   };
 }
@@ -85,8 +89,41 @@ function nutritionReducer(state, action) {
     case 'LOAD_USER_DATA':
       return {
         ...state,
-        dailyGoal: action.payload.dailyGoal || state.dailyGoal,
+        dailyGoal: { ...state.dailyGoal, ...action.payload.dailyGoal },
       };
+
+    case 'ADD_RECENT_FOOD': {
+      const foodToAdd = action.payload;
+      const existingFiltered = state.recentFoods.filter(f => f.name !== foodToAdd.name);
+      return {
+        ...state,
+        recentFoods: [foodToAdd, ...existingFiltered].slice(0, 20)
+      };
+    }
+
+    case 'SET_WATER':
+      return {
+        ...state,
+        waterIntake: { ...state.waterIntake, [action.payload.date]: action.payload.glasses }
+      };
+
+    case 'INCREMENT_WATER': {
+      const { date } = action.payload;
+      const current = state.waterIntake[date] || 0;
+      return {
+        ...state,
+        waterIntake: { ...state.waterIntake, [date]: current + 1 }
+      };
+    }
+
+    case 'DECREMENT_WATER': {
+      const { date } = action.payload;
+      const current = state.waterIntake[date] || 0;
+      return {
+        ...state,
+        waterIntake: { ...state.waterIntake, [date]: Math.max(0, current - 1) }
+      };
+    }
 
     default:
       return state;
@@ -148,6 +185,11 @@ export function NutritionProvider({ children }) {
     dispatch({
       type: 'ADD_FOOD_LOCAL',
       payload: { date, meal: mealType, food: foodWithId },
+    });
+
+    dispatch({
+      type: 'ADD_RECENT_FOOD',
+      payload: food,
     });
 
     // Sync to backend
@@ -214,8 +256,20 @@ export function NutritionProvider({ children }) {
     }
   }, [token]);
 
+  const getRecentFoods = useCallback(() => {
+    return state.recentFoods;
+  }, [state.recentFoods]);
+
+  const addWater = useCallback((date) => {
+    dispatch({ type: 'INCREMENT_WATER', payload: { date } });
+  }, []);
+
+  const removeWater = useCallback((date) => {
+    dispatch({ type: 'DECREMENT_WATER', payload: { date } });
+  }, []);
+
   return (
-    <NutritionContext.Provider value={{ state, dispatch, addFood, removeFood, updateGoals, fetchDayLogs }}>
+    <NutritionContext.Provider value={{ state, dispatch, addFood, removeFood, updateGoals, fetchDayLogs, getRecentFoods, addWater, removeWater }}>
       {children}
     </NutritionContext.Provider>
   );

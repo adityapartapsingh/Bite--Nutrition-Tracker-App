@@ -2,6 +2,7 @@ import React from 'react';
 import { useNutrition } from '../../context/NutritionContext';
 import { formatDayOfWeek, offsetDate, getTodayKey } from '../../utils/nutrition';
 import DayCard from './DayCard';
+import WeeklyChart from './WeeklyChart';
 import './History.css';
 
 function History({ onSelectDate }) {
@@ -33,6 +34,8 @@ function History({ onSelectDate }) {
     <div className="history" id="history-view">
       <h1 className="history__title">History</h1>
       <p className="history__subtitle">Last 7 days</p>
+
+      {hasAnyData && <WeeklyChart days={days} goal={dailyGoal} />}
 
       {hasAnyData ? (
         <div className="history__list">
