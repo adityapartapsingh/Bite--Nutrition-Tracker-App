@@ -196,15 +196,15 @@ img, svg {
 
 /* ─── Utility Classes ─── */
 .fade-in-up {
-  animation: fadeInUp var(--transition-slow) ease forwards;
+  animation: fadeInUp var(--transition-slow) forwards;
 }
 
 .fade-in {
-  animation: fadeIn var(--transition-slow) ease forwards;
+  animation: fadeIn var(--transition-slow) forwards;
 }
 
 .scale-in {
-  animation: scaleIn var(--transition-normal) ease forwards;
+  animation: scaleIn var(--transition-normal) forwards;
 }
 
 .bounce-in { animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards; }

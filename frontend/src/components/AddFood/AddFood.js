@@ -337,8 +337,8 @@ function AddFood({ initialMeal }) {
       {activeSubTab === 'ai' && (
         <div className="add-food__ai-panel">
           <AiScanner 
-            onAddItems={(items) => {
-              items.forEach(food => handleAddToMeal(food, initialMeal || 'breakfast', 1));
+            onAddItems={(items, selectedMeal) => {
+              items.forEach(food => handleAddToMeal(food, selectedMeal || initialMeal || 'breakfast', 1));
               handleTabSwitch('search');
             }}
             onCancel={() => handleTabSwitch('search')}

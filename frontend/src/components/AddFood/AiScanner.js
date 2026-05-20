@@ -15,6 +15,14 @@ function AiScanner({ onAddItems, onCancel }) {
 
   // Multi-select state
   const [selectedIndices, setSelectedIndices] = useState(new Set());
+  const [targetMeal, setTargetMeal] = useState('breakfast');
+
+  const MEALS = [
+    { id: 'breakfast', label: 'Breakfast', icon: '🌅' },
+    { id: 'lunch', label: 'Lunch', icon: '☀️' },
+    { id: 'dinner', label: 'Dinner', icon: '🌙' },
+    { id: 'snacks', label: 'Snacks', icon: '🍿' },
+  ];
 
   const handleImageSelect = (e) => {
     const file = e.target.files[0];
@@ -82,7 +90,7 @@ function AiScanner({ onAddItems, onCancel }) {
   const handleAddSelected = () => {
     if (!results) return;
     const selectedFoods = results.filter((_, index) => selectedIndices.has(index));
-    onAddItems(selectedFoods);
+    onAddItems(selectedFoods, targetMeal);
   };
 
   return (
@@ -197,6 +205,23 @@ function AiScanner({ onAddItems, onCancel }) {
                     </div>
                   );
                 })}
+              </div>
+
+              <div className="manual-entry__meal-select" style={{ marginBottom: '16px' }}>
+                <h3 className="manual-entry__meal-title">Add To</h3>
+                <div className="manual-entry__meal-options">
+                  {MEALS.map(meal => (
+                    <button
+                      key={meal.id}
+                      type="button"
+                      className={`manual-entry__meal-btn ${targetMeal === meal.id ? 'manual-entry__meal-btn--active' : ''}`}
+                      onClick={() => setTargetMeal(meal.id)}
+                    >
+                      <span className="manual-entry__meal-icon">{meal.icon}</span>
+                      <span>{meal.label}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <div className="ai-scanner__actions">

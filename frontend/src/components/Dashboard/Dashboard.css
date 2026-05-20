@@ -1,6 +1,6 @@
 /* ─── Dashboard Container ─── */
 .dashboard {
-  animation: fadeInUp var(--transition-slow) ease;
+  animation: fadeInUp var(--transition-slow);
 }
 
 /* ─── Date Navigation ─── */
@@ -460,7 +460,7 @@
   background: rgba(255, 255, 255, 0.025);
   border: 1px solid rgba(255, 255, 255, 0.03);
   transition: all var(--transition-fast);
-  animation: fadeInUp var(--transition-slow) ease forwards;
+  animation: fadeInUp var(--transition-slow) forwards;
   opacity: 0;
 }
 
