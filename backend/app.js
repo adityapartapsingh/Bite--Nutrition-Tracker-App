@@ -21,6 +21,11 @@ app.use(cors());
 app.use(express.json());
 
 // ─── Routes ───
+app.get('/ping', (req, res) => {
+    // Send a tiny 200 OK response with no external queries
+    res.status(200).send('OK'); 
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/goals', auth, goalsRoutes);
 app.use('/api/logs', auth, logsRoutes);
