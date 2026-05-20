@@ -1,0 +1,14 @@
+# Ignore backend dependencies and local files
+/backend/node_modules/
+/backend/.env
+/backend/.env.local
+/backend/bite.db
+/backend/bite.db-shm
+/backend/bite.db-wal
+
+# Ignore embedded frontend repository and build artifacts
+/frontend/
+
+# OS generated files
+.DS_Store
+Thumbs.db
