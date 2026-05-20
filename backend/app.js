@@ -12,6 +12,7 @@ const authRoutes = require('./routes/authRoutes');
 const goalsRoutes = require('./routes/goalsRoutes');
 const logsRoutes = require('./routes/logsRoutes');
 const nutritionRoutes = require('./routes/nutritionRoutes');
+const aiRoutes = require('./routes/aiRoutes');
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/goals', auth, goalsRoutes);
 app.use('/api/logs', auth, logsRoutes);
+app.use('/api/ai', aiRoutes);
 app.use('/api', nutritionRoutes);          // public — barcode & search proxies
 
 // ─── Error Handler ───

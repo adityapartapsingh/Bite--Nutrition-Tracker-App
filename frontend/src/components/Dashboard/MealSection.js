@@ -62,8 +62,7 @@ function MealSection({ title, icon, foods, mealType, onAddClick, onRemoveFood })
                     <div className="meal-section__food-info">
                       <span className="meal-section__food-name">{food.name}</span>
                       <span className="meal-section__food-serving">
-                        {food.servingSize || food.serving_size || '1 serving'}
-                        {qty > 1 ? ` × ${qty}` : ''}
+                        <strong style={{ color: 'var(--text-primary)' }}>{qty}x</strong> {food.servingSize || food.serving_size || '1 serving'}
                       </span>
                       <div className="meal-section__food-macros">
                         <span className="meal-section__food-macro meal-section__food-macro--p">P {prot}g</span>

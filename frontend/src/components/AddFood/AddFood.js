@@ -6,6 +6,7 @@ import FoodCard from './FoodCard';
 import FoodDetail from './FoodDetail';
 import QuickSuggestions from './QuickSuggestions';
 import ManualEntry from './ManualEntry';
+import AiScanner from './AiScanner';
 import { searchFood, lookupBarcode } from '../../services/api';
 import { useNutrition } from '../../context/NutritionContext';
 import { searchPopularFoods } from '../../utils/popularFoods';
@@ -154,6 +155,17 @@ function AddFood({ initialMeal }) {
             <line x1="18" y1="8" x2="18" y2="16" />
           </svg>
           Scan
+        </button>
+        <button
+          className={`add-food__tab ${activeSubTab === 'ai' ? 'add-food__tab--active' : ''}`}
+          id="tab-ai"
+          onClick={() => handleTabSwitch('ai')}
+          type="button"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+          </svg>
+          AI Scan
         </button>
         <button
           className={`add-food__tab ${activeSubTab === 'manual' ? 'add-food__tab--active' : ''}`}
@@ -318,6 +330,19 @@ function AddFood({ initialMeal }) {
               <span>{error}</span>
             </div>
           )}
+        </div>
+      )}
+
+      {/* AI Scan Tab */}
+      {activeSubTab === 'ai' && (
+        <div className="add-food__ai-panel">
+          <AiScanner 
+            onAddItems={(items) => {
+              items.forEach(food => handleAddToMeal(food, initialMeal || 'breakfast', 1));
+              handleTabSwitch('search');
+            }}
+            onCancel={() => handleTabSwitch('search')}
+          />
         </div>
       )}
 
