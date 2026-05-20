@@ -3,15 +3,16 @@ require('dotenv').config();
 const app = require('./app');
 const { port } = require('./config');
 
+const serverUrl = process.env.RENDER_EXTERNAL_URL || process.env.PUBLIC_URL || `http://localhost:${port}`;
+
 app.listen(port, () => {
-  console.log(`Bite backend listening on http://localhost:${port}`);
+  console.log(`Bite backend listening on ${serverUrl}`);
 
   // Self-ping every 14 minutes to keep backend live
   setInterval(async () => {
     try {
-      const url = process.env.RENDER_EXTERNAL_URL || process.env.PUBLIC_URL || `http://localhost:${port}`;
-      const res = await fetch(`${url}/ping`);
-      console.log(`[Self-Ping] Sent to ${url} - Status: ${res.status}`);
+      const res = await fetch(`${serverUrl}/ping`);
+      console.log(`[Self-Ping] Sent to ${serverUrl} - Status: ${res.status}`);
     } catch (err) {
       console.error(`[Self-Ping] Error:`, err.message);
     }
