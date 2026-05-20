@@ -7,7 +7,6 @@ function NutritionInsight({ macros, goal }) {
 
     const proteinProgress = (macros.protein / goal.protein) * 100;
     const carbProgress = (macros.carbs / goal.carbs) * 100;
-    const fatProgress = (macros.fat / goal.fat) * 100;
 
     if (proteinProgress < 50 && carbProgress > 80) {
       return {
