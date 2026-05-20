@@ -17,7 +17,14 @@ const aiRoutes = require('./routes/aiRoutes');
 const app = express();
 
 // ─── Global Middleware ───
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:3000', 
+    'https://bite-nutrition-tracker-app.vercel.app'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 // ─── Routes ───
