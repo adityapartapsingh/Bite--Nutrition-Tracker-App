@@ -1,4 +1,10 @@
-const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+// Support both URLs in a single `.env`: REACT_APP_API_URL (override),
+// REACT_APP_API_URL_PROD and REACT_APP_API_URL_DEV.
+const PROD_API_FALLBACK = process.env.REACT_APP_API_URL_PROD || 'https://bite-nutrition-tracker.onrender.com';
+const DEV_API_FALLBACK = process.env.REACT_APP_API_URL_DEV || 'http://localhost:3001';
+const API_BASE =
+  process.env.REACT_APP_API_URL ||
+  (process.env.NODE_ENV === 'production' ? PROD_API_FALLBACK : DEV_API_FALLBACK);
 
 /**
  * Search for foods by name/keyword.

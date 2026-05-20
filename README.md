@@ -22,6 +22,11 @@ Bite is a premium, beautifully designed full-stack nutrition tracking applicatio
 - **Authentication**: JWT (JSON Web Tokens) with bcrypt password hashing.
 - **AI Integration**: Google Generative AI (`@google/generative-ai`) for image recognition.
 
+## 🔗 Live Demo
+
+- **Production (API & Backend)**: https://bite-nutrition-tracker.onrender.com
+- **Production (Frontend)**: https://bite-nutrition-tracker-app.vercel.app/
+
 ## 🚀 Getting Started
 
 ### Prerequisites
