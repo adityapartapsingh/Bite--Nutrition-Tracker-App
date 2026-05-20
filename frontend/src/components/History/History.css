@@ -1,0 +1,153 @@
+/* ─── History View ────────────────────────────────────────── */
+
+.history__title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 4px 0;
+  letter-spacing: -0.02em;
+}
+
+.history__subtitle {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  margin: 0 0 20px 0;
+}
+
+.history__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.history__item {
+  animation: fadeInUp 0.3s ease forwards;
+  opacity: 0;
+}
+
+/* ─── Day Card ─── */
+.day-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  font-family: inherit;
+  text-align: left;
+}
+
+.day-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-glass-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.day-card:active {
+  transform: scale(0.98);
+}
+
+.day-card--under { border-left: 3px solid var(--accent-green); }
+.day-card--near { border-left: 3px solid var(--accent-yellow); }
+.day-card--over { border-left: 3px solid var(--accent-red); }
+
+.day-card__left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 90px;
+}
+
+.day-card__label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.day-card__date {
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+.day-card__center {
+  flex: 1;
+}
+
+.day-card__macro-bar {
+  display: flex;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  gap: 2px;
+}
+
+.day-card__macro-segment {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width var(--transition-slow);
+}
+
+.day-card__macro-segment--protein { background: var(--gradient-protein); }
+.day-card__macro-segment--fat { background: var(--gradient-fat); }
+.day-card__macro-segment--carbs { background: var(--gradient-carbs); }
+
+.day-card__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+  min-width: 52px;
+}
+
+.day-card__calories {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.day-card__cal-label {
+  font-size: 0.65rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ─── Empty State ─── */
+.history__empty {
+  text-align: center;
+  padding: 64px 16px;
+  color: var(--text-secondary);
+}
+
+.history__empty-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.history__empty h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 8px 0;
+}
+
+.history__empty p {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  margin: 0;
+}
+
+/* ─── Animations ─── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}

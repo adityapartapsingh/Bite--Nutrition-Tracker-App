@@ -1,0 +1,544 @@
+/* ─── Dashboard Container ─── */
+.dashboard {
+  animation: fadeInUp var(--transition-slow) ease;
+}
+
+/* ─── Date Navigation ─── */
+.dashboard__date-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 4px;
+  margin-bottom: 8px;
+}
+
+.dashboard__date-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  color: var(--text-secondary);
+  transition: all var(--transition-normal);
+  cursor: pointer;
+}
+
+.dashboard__date-btn:hover {
+  background: var(--bg-glass-hover);
+  border-color: var(--border-glass-hover);
+  color: var(--text-primary);
+}
+
+.dashboard__date-btn:active {
+  transform: scale(0.9);
+}
+
+.dashboard__date-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dashboard__date-info {
+  text-align: center;
+}
+
+.dashboard__date-main {
+  display: block;
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.dashboard__date-sub {
+  display: block;
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.dashboard__today-badge {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--accent-green);
+  background: rgba(74, 222, 128, 0.12);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+}
+
+/* ─── Settings Button ─── */
+.dashboard__settings-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  color: var(--text-secondary);
+  transition: all var(--transition-normal);
+  cursor: pointer;
+}
+
+.dashboard__settings-btn:hover {
+  background: var(--bg-glass-hover);
+  color: var(--text-primary);
+  transform: rotate(45deg);
+}
+
+.dashboard__settings-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ─── Calorie Card (Hero) ─── */
+.dashboard__calorie-card {
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-xl);
+  padding: 28px 20px 24px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard__calorie-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    ellipse at 30% 20%,
+    rgba(74, 222, 128, 0.06) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+/* ─── Calorie Ring Layout ─── */
+.calorie-ring {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.calorie-ring__svg {
+  filter: drop-shadow(0 0 12px rgba(74, 222, 128, 0.15));
+}
+
+.calorie-ring__content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, calc(-50% - 12px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.calorie-ring__value {
+  font-size: var(--font-3xl);
+  font-weight: 800;
+  line-height: 1;
+  background: var(--gradient-calories);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.calorie-ring__label {
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+.calorie-ring__percentage {
+  font-size: var(--font-sm);
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.calorie-ring__remaining {
+  text-align: center;
+  margin-top: 12px;
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.calorie-ring__over {
+  color: var(--accent-red);
+  font-weight: 600;
+}
+
+/* ─── Macro Bars Section ─── */
+.dashboard__macros {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.dashboard__macros-title {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 2px;
+}
+
+/* ─── MacroBar ─── */
+.macro-bar {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  transition: all var(--transition-normal);
+}
+
+.macro-bar:hover {
+  background: var(--bg-glass-hover);
+  border-color: var(--border-glass-hover);
+}
+
+.macro-bar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.macro-bar__label-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.macro-bar__icon {
+  font-size: var(--font-base);
+  line-height: 1;
+}
+
+.macro-bar__label {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.macro-bar__values {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  font-size: var(--font-sm);
+}
+
+.macro-bar__current {
+  font-weight: 700;
+}
+
+.macro-bar__separator {
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+.macro-bar__goal {
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+.macro-bar__track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.macro-bar__fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.macro-bar__fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 10px currentColor;
+  opacity: 0.3;
+}
+
+.macro-bar__fill--over {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ─── Meal Sections ─── */
+.dashboard__meals {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dashboard__meals-title {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+
+/* ─── MealSection ─── */
+.meal-section {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--transition-normal);
+}
+
+.meal-section:hover {
+  border-color: var(--border-glass-hover);
+}
+
+.meal-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 16px;
+  background: transparent;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.meal-section__header:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.meal-section__header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.meal-section__icon {
+  font-size: var(--font-lg);
+  line-height: 1;
+}
+
+.meal-section__title {
+  font-size: var(--font-base);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.meal-section__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  background: rgba(74, 222, 128, 0.15);
+  color: var(--accent-green);
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+.meal-section__header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.meal-section__calories {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.meal-section__chevron {
+  display: flex;
+  align-items: center;
+  color: var(--text-tertiary);
+  transition: transform var(--transition-normal);
+}
+
+.meal-section__chevron--open {
+  transform: rotate(180deg);
+}
+
+/* ─── Food List ─── */
+.meal-section__content {
+  padding: 0 16px 14px;
+}
+
+.meal-section__food-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.meal-section__food-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.02);
+  transition: background var(--transition-fast);
+  animation: fadeInUp var(--transition-slow) ease forwards;
+  opacity: 0;
+}
+
+.meal-section__food-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.meal-section__food-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.meal-section__food-name {
+  font-size: var(--font-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meal-section__food-serving {
+  font-size: var(--font-xs);
+  color: var(--text-tertiary);
+}
+
+.meal-section__food-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.meal-section__food-calories {
+  font-size: var(--font-xs);
+  font-weight: 600;
+  color: var(--accent-green);
+  background: rgba(74, 222, 128, 0.1);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.meal-section__remove-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.meal-section__remove-btn:hover {
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--accent-red);
+}
+
+.meal-section__remove-btn:active {
+  transform: scale(0.85);
+}
+
+/* ─── Empty State ─── */
+.meal-section__empty {
+  text-align: center;
+  padding: 12px;
+  color: var(--text-tertiary);
+  font-size: var(--font-sm);
+  font-style: italic;
+}
+
+/* ─── Add Food Button ─── */
+.meal-section__add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.meal-section__add-btn:hover {
+  background: rgba(74, 222, 128, 0.08);
+  border-color: rgba(74, 222, 128, 0.25);
+  color: var(--accent-green);
+}
+
+.meal-section__add-btn:active {
+  transform: scale(0.98);
+}
+
+.meal-section__add-btn svg {
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ─── Header wrapper ─── */
+.dashboard__header {
+  position: relative;
+}

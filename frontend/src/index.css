@@ -1,0 +1,269 @@
+@import './styles/variables.css';
+
+/* ─── Global Reset ─── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ─── HTML & Body ─── */
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* ─── Typography ─── */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+p {
+  line-height: 1.6;
+}
+
+a {
+  color: var(--accent-green);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--accent-teal);
+}
+
+/* ─── Form Elements ─── */
+input,
+button,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+button {
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ─── Lists ─── */
+ul, ol {
+  list-style: none;
+}
+
+/* ─── Images ─── */
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* ─── Selection ─── */
+::selection {
+  background-color: rgba(74, 222, 128, 0.25);
+  color: var(--text-primary);
+}
+
+/* ─── Scrollbar (Webkit) ─── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ─── Animations ─── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ─── Utility Classes ─── */
+.fade-in-up {
+  animation: fadeInUp var(--transition-slow) ease forwards;
+}
+
+.fade-in {
+  animation: fadeIn var(--transition-slow) ease forwards;
+}
+
+.scale-in {
+  animation: scaleIn var(--transition-normal) ease forwards;
+}
+
+/* ─── App Layout ─── */
+.app {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-bottom: 88px;
+  position: relative;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 12px 16px 0;
+}
+
+.app-header__greeting {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.app-header__greeting strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.app-header__logout {
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-full);
+  padding: 5px 12px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.app-header__logout:hover {
+  color: var(--accent-red);
+  border-color: rgba(248, 113, 113, 0.3);
+  background: rgba(248, 113, 113, 0.08);
+}
+
+.app-content {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+  padding-top: 8px;
+}
+
+/* ─── App Loading ─── */
+.app-loading {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: var(--bg-primary);
+}
+
+.app-loading__spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--border-glass);
+  border-top-color: var(--accent-green);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.app-loading__text {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* ─── Focus Visible ─── */
+:focus-visible {
+  outline: 2px solid var(--accent-green);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}

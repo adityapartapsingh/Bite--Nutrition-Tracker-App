@@ -6,8 +6,9 @@
 /backend/bite.db-shm
 /backend/bite.db-wal
 
-# Ignore embedded frontend repository and build artifacts
-/frontend/
+# Ignore frontend build outputs and dependencies
+/frontend/node_modules/
+/frontend/build/
 
 # OS generated files
 .DS_Store
