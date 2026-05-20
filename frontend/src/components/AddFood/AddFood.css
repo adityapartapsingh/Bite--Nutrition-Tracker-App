@@ -802,3 +802,234 @@
   from { opacity: 0; transform: scale(0.9); }
   to { opacity: 1; transform: scale(1); }
 }
+
+/* ─── Recently Added (Just Added) ─── */
+.add-food__recent {
+  margin-bottom: 18px;
+  padding: 14px;
+  background: rgba(74, 222, 128, 0.04);
+  border: 1px solid rgba(74, 222, 128, 0.12);
+  border-radius: var(--radius-lg);
+  animation: fadeInUp 0.3s ease;
+}
+
+.add-food__recent-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent-green);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 10px 0;
+}
+
+.add-food__recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.add-food__recent-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-md);
+  animation: fadeInUp 0.2s ease;
+}
+
+.add-food__recent-check {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  background: rgba(74, 222, 128, 0.15);
+  color: var(--accent-green);
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.add-food__recent-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.add-food__recent-name {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.add-food__recent-meal {
+  font-size: 0.68rem;
+  color: var(--text-tertiary);
+}
+
+.add-food__recent-cals {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent-green);
+  flex-shrink: 0;
+}
+
+/* ─── Search Prompt (with Today's Log) ─── */
+.add-food__search-prompt {
+  text-align: center;
+  padding: 32px 16px 16px;
+}
+
+.add-food__search-prompt-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.add-food__search-prompt-text {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.add-food__search-prompt-hint {
+  font-size: 0.82rem;
+  color: var(--text-tertiary);
+  margin: 4px 0 0;
+}
+
+/* ─── Today's Log ─── */
+.add-food__today-log {
+  margin-top: 24px;
+  text-align: left;
+}
+
+.add-food__today-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 10px 0;
+}
+
+.add-food__today-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.add-food__today-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast);
+}
+
+.add-food__today-item:hover {
+  background: var(--bg-glass-hover);
+}
+
+.add-food__today-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.add-food__today-item-name {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.add-food__today-item-meal {
+  font-size: 0.65rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.add-food__today-item-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.add-food__today-item-cals {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent-green);
+}
+
+.add-food__today-item-macros {
+  display: flex;
+  gap: 4px;
+}
+
+.add-food__today-macro {
+  font-size: 0.58rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.01em;
+}
+
+.add-food__today-macro--p {
+  color: var(--accent-blue);
+  background: rgba(96, 165, 250, 0.1);
+}
+
+.add-food__today-macro--f {
+  color: var(--accent-orange);
+  background: rgba(251, 146, 60, 0.1);
+}
+
+.add-food__today-macro--c {
+  color: var(--accent-purple);
+  background: rgba(167, 139, 250, 0.1);
+}
+
+/* ─── Toast ─── */
+.add-food__toast {
+  position: fixed;
+  bottom: 96px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-card);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  border-radius: var(--radius-full);
+  padding: 10px 20px;
+  color: var(--accent-green);
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), var(--glow-green);
+  z-index: var(--z-toast);
+  animation: toastIn 0.3s ease forwards;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px) scale(0.9); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}

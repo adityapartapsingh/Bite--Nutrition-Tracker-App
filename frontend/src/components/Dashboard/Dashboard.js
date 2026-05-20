@@ -21,6 +21,7 @@ function Dashboard({ onNavigateToAdd, onSelectMeal }) {
 
   const dayLog = logs[selectedDate] || { breakfast: [], lunch: [], dinner: [], snacks: [] };
   const totals = calculateDayTotals(dayLog);
+  const totalItems = Object.values(dayLog).reduce((sum, arr) => sum + (arr?.length || 0), 0);
 
   const navigateDate = (offset) => {
     const newDate = offsetDate(selectedDate, offset);
@@ -74,7 +75,7 @@ function Dashboard({ onNavigateToAdd, onSelectMeal }) {
       </header>
 
       {/* Calorie Ring Hero */}
-      <section className="dashboard__hero glass-card" id="calorie-hero">
+      <section className="dashboard__hero" id="calorie-hero">
         <CalorieRing consumed={totals.calories} goal={dailyGoal.calories} />
         <button
           className="dashboard__goal-btn"
@@ -90,7 +91,33 @@ function Dashboard({ onNavigateToAdd, onSelectMeal }) {
         </button>
       </section>
 
+      {/* Quick Summary Strip */}
+      {totalItems > 0 && (
+        <div className="dashboard__summary" id="day-summary">
+          <div className="dashboard__summary-item">
+            <span className="dashboard__summary-value dashboard__summary-value--green">{totalItems}</span>
+            <span className="dashboard__summary-label">Items</span>
+          </div>
+          <div className="dashboard__summary-divider" />
+          <div className="dashboard__summary-item">
+            <span className="dashboard__summary-value dashboard__summary-value--blue">{Math.round(totals.protein)}g</span>
+            <span className="dashboard__summary-label">Protein</span>
+          </div>
+          <div className="dashboard__summary-divider" />
+          <div className="dashboard__summary-item">
+            <span className="dashboard__summary-value dashboard__summary-value--orange">{Math.round(totals.fat)}g</span>
+            <span className="dashboard__summary-label">Fat</span>
+          </div>
+          <div className="dashboard__summary-divider" />
+          <div className="dashboard__summary-item">
+            <span className="dashboard__summary-value dashboard__summary-value--purple">{Math.round(totals.carbs)}g</span>
+            <span className="dashboard__summary-label">Carbs</span>
+          </div>
+        </div>
+      )}
+
       {/* Macro Bars */}
+      <h2 className="dashboard__section-title">Macros</h2>
       <section className="dashboard__macros" id="macro-bars">
         <MacroBar
           label="Protein"
@@ -119,6 +146,7 @@ function Dashboard({ onNavigateToAdd, onSelectMeal }) {
       </section>
 
       {/* Meal Sections */}
+      <h2 className="dashboard__section-title">Meals</h2>
       <section className="dashboard__meals" id="meal-sections">
         {MEALS.map((meal) => (
           <MealSection

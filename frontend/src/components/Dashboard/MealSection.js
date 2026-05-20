@@ -8,7 +8,7 @@ function MealSection({ title, icon, foods, mealType, onAddClick, onRemoveFood })
 
   return (
     <section
-      className="meal-section"
+      className={`meal-section ${foodCount > 0 ? 'meal-section--has-items' : ''}`}
       id={`meal-section-${mealType}`}
       aria-label={title}
     >
@@ -46,43 +46,54 @@ function MealSection({ title, icon, foods, mealType, onAddClick, onRemoveFood })
         <div className="meal-section__content">
           {foodCount > 0 ? (
             <ul className="meal-section__food-list">
-              {foods.map((food, index) => (
-                <li
-                  key={food.id || index}
-                  className="meal-section__food-item"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <div className="meal-section__food-info">
-                    <span className="meal-section__food-name">{food.name}</span>
-                    <span className="meal-section__food-serving">
-                      {food.servingSize || food.serving_size || '1 serving'}
-                      {food.quantity && food.quantity > 1
-                        ? ` × ${food.quantity}`
-                        : ''}
-                    </span>
-                  </div>
-                  <div className="meal-section__food-actions">
-                    <span className="meal-section__food-calories">
-                      {Math.round((food.calories || 0) * (food.quantity || 1))} kcal
-                    </span>
-                    <button
-                      className="meal-section__remove-btn"
-                      id={`remove-food-${food.id || index}`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onRemoveFood(mealType, food.id);
-                      }}
-                      aria-label={`Remove ${food.name}`}
-                      type="button"
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                      </svg>
-                    </button>
-                  </div>
-                </li>
-              ))}
+              {foods.map((food, index) => {
+                const qty = food.quantity || 1;
+                const cals = Math.round((food.calories || 0) * qty);
+                const prot = Math.round((food.protein || 0) * qty);
+                const fatVal = Math.round((food.fat || 0) * qty);
+                const carbs = Math.round((food.carbs || 0) * qty);
+
+                return (
+                  <li
+                    key={food.id || index}
+                    className="meal-section__food-item"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <div className="meal-section__food-info">
+                      <span className="meal-section__food-name">{food.name}</span>
+                      <span className="meal-section__food-serving">
+                        {food.servingSize || food.serving_size || '1 serving'}
+                        {qty > 1 ? ` × ${qty}` : ''}
+                      </span>
+                      <div className="meal-section__food-macros">
+                        <span className="meal-section__food-macro meal-section__food-macro--p">P {prot}g</span>
+                        <span className="meal-section__food-macro meal-section__food-macro--f">F {fatVal}g</span>
+                        <span className="meal-section__food-macro meal-section__food-macro--c">C {carbs}g</span>
+                      </div>
+                    </div>
+                    <div className="meal-section__food-actions">
+                      <span className="meal-section__food-calories">
+                        {cals} kcal
+                      </span>
+                      <button
+                        className="meal-section__remove-btn"
+                        id={`remove-food-${food.id || index}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onRemoveFood(mealType, food.id);
+                        }}
+                        aria-label={`Remove ${food.name}`}
+                        type="button"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18" />
+                          <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                      </button>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           ) : (
             <p className="meal-section__empty">No foods logged yet</p>

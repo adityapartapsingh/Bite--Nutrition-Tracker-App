@@ -1,16 +1,38 @@
-import React, { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from './AuthContext';
 import { getTodayKey, generateId } from '../utils/nutrition';
 
 const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+const STORAGE_KEY = 'bite-nutrition-data';
+
+// ─── localStorage helpers ───
+function loadFromStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) { /* ignore */ }
+  return null;
+}
+
+function saveToStorage(state) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      dailyGoal: state.dailyGoal,
+      logs: state.logs,
+    }));
+  } catch (e) { /* ignore */ }
+}
 
 // ─── Default State ───
-const defaultState = {
-  dailyGoal: { calories: 2000, protein: 150, fat: 65, carbs: 250 },
-  selectedDate: getTodayKey(),
-  logs: {},
-  syncing: false,
-};
+function getInitialState() {
+  const saved = loadFromStorage();
+  return {
+    dailyGoal: saved?.dailyGoal || { calories: 2000, protein: 150, fat: 65, carbs: 250 },
+    selectedDate: getTodayKey(),
+    logs: saved?.logs || {},
+    syncing: false,
+  };
+}
 
 // ─── Reducer ───
 function nutritionReducer(state, action) {
@@ -77,7 +99,13 @@ const NutritionContext = createContext(null);
 // ─── Provider ───
 export function NutritionProvider({ children }) {
   const { token, user } = useAuth();
-  const [state, dispatch] = useReducer(nutritionReducer, defaultState);
+  const [state, dispatch] = useReducer(nutritionReducer, null, getInitialState);
+  const hasFetchedRef = useRef({});
+
+  // Persist to localStorage on every state change
+  useEffect(() => {
+    saveToStorage(state);
+  }, [state]);
 
   // Load user goals when authenticated
   useEffect(() => {
@@ -86,9 +114,12 @@ export function NutritionProvider({ children }) {
     }
   }, [user]);
 
-  // Fetch day logs from backend when date changes and user is authenticated
+  // Fetch day logs from backend — only once per date per session
   const fetchDayLogs = useCallback(async (date) => {
     if (!token) return;
+    if (hasFetchedRef.current[date]) return; // already fetched this date
+    hasFetchedRef.current[date] = true;
+
     try {
       const res = await fetch(`${API_BASE}/api/logs/${date}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -99,6 +130,7 @@ export function NutritionProvider({ children }) {
       }
     } catch (err) {
       console.warn('Failed to fetch day logs:', err);
+      // Keep local data as-is on network failure
     }
   }, [token]);
 
@@ -112,12 +144,13 @@ export function NutritionProvider({ children }) {
   const addFood = useCallback(async (date, mealType, food) => {
     const foodWithId = { ...food, id: generateId(), quantity: food.quantity || 1 };
 
-    // Optimistic update
+    // Optimistic local update (immediately visible)
     dispatch({
       type: 'ADD_FOOD_LOCAL',
       payload: { date, meal: mealType, food: foodWithId },
     });
 
+    // Sync to backend
     if (token) {
       try {
         const res = await fetch(`${API_BASE}/api/logs`, {
@@ -130,7 +163,7 @@ export function NutritionProvider({ children }) {
         });
         const data = await res.json();
         if (data.success && data.id) {
-          // Update local food with server-assigned ID
+          // Swap temp ID with server-assigned ID
           dispatch({ type: 'REMOVE_FOOD_LOCAL', payload: { date, meal: mealType, foodId: foodWithId.id } });
           dispatch({
             type: 'ADD_FOOD_LOCAL',
@@ -139,12 +172,12 @@ export function NutritionProvider({ children }) {
         }
       } catch (err) {
         console.warn('Failed to sync food add:', err);
+        // Item stays in local state even if backend is down
       }
     }
   }, [token]);
 
   const removeFood = useCallback(async (date, mealType, foodId) => {
-    // Optimistic update
     dispatch({
       type: 'REMOVE_FOOD_LOCAL',
       payload: { date, meal: mealType, foodId },

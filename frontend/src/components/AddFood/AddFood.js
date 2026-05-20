@@ -16,9 +16,15 @@ function AddFood({ initialMeal }) {
   const [error, setError] = useState(null);
   const [selectedFood, setSelectedFood] = useState(null);
   const [scannerActive, setScannerActive] = useState(false);
+  const [recentlyAdded, setRecentlyAdded] = useState([]);
+  const [toast, setToast] = useState(null);
 
-  // Debounced search
   const [debounceTimer, setDebounceTimer] = useState(null);
+
+  const showToast = (message) => {
+    setToast(message);
+    setTimeout(() => setToast(null), 2200);
+  };
 
   const handleSearchChange = useCallback((value) => {
     setSearchQuery(value);
@@ -79,23 +85,32 @@ function AddFood({ initialMeal }) {
     setSelectedFood(food);
   };
 
+  const MEAL_LABELS = { breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner', snacks: 'Snacks' };
+
   const handleAddToMeal = (food, mealType, quantity) => {
-    const foodToAdd = {
-      ...food,
-      quantity: quantity,
-    };
+    const foodToAdd = { ...food, quantity };
     addFood(state.selectedDate, mealType, foodToAdd);
+    setRecentlyAdded((prev) => [
+      { ...food, quantity, mealType, addedAt: Date.now() },
+      ...prev.slice(0, 4),
+    ]);
+    showToast(`Added ${food.name} to ${MEAL_LABELS[mealType] || mealType}`);
     setSelectedFood(null);
   };
 
   const handleTabSwitch = (tab) => {
     setActiveSubTab(tab);
-    if (tab === 'scan') {
-      setScannerActive(true);
-    } else {
-      setScannerActive(false);
-    }
+    setScannerActive(tab === 'scan');
   };
+
+  // Get today's logged items from context
+  const dayLog = state.logs[state.selectedDate] || {};
+  const allLoggedItems = [];
+  ['breakfast', 'lunch', 'dinner', 'snacks'].forEach((meal) => {
+    (dayLog[meal] || []).forEach((food) => {
+      allLoggedItems.push({ ...food, mealType: meal });
+    });
+  });
 
   return (
     <div className="add-food" id="add-food-view">
@@ -128,9 +143,28 @@ function AddFood({ initialMeal }) {
             <line x1="14" y1="8" x2="14" y2="16" />
             <line x1="18" y1="8" x2="18" y2="16" />
           </svg>
-          Scan Barcode
+          Scan
         </button>
       </div>
+
+      {/* Recently added in this session */}
+      {recentlyAdded.length > 0 && (
+        <div className="add-food__recent" id="recently-added">
+          <h3 className="add-food__recent-title">Just added</h3>
+          <div className="add-food__recent-list">
+            {recentlyAdded.map((item, i) => (
+              <div key={`recent-${i}`} className="add-food__recent-item">
+                <span className="add-food__recent-check">✓</span>
+                <div className="add-food__recent-info">
+                  <span className="add-food__recent-name">{item.name}</span>
+                  <span className="add-food__recent-meal">{MEAL_LABELS[item.mealType]}</span>
+                </div>
+                <span className="add-food__recent-cals">{Math.round((item.calories || 0) * (item.quantity || 1))} kcal</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Search Tab */}
       {activeSubTab === 'search' && (
@@ -162,10 +196,35 @@ function AddFood({ initialMeal }) {
           )}
 
           {!loading && !error && results.length === 0 && !searchQuery.trim() && (
-            <div className="add-food__empty" id="search-prompt">
-              <span className="add-food__empty-icon">🍎</span>
-              <p>Search for any food</p>
-              <p className="add-food__empty-hint">Try "chicken breast" or "200g rice"</p>
+            <div className="add-food__search-prompt" id="search-prompt">
+              <span className="add-food__search-prompt-icon">🍎</span>
+              <p className="add-food__search-prompt-text">Search for any food</p>
+              <p className="add-food__search-prompt-hint">Try "chicken breast" or "200g rice"</p>
+
+              {/* Show today's logged items when no search query */}
+              {allLoggedItems.length > 0 && (
+                <div className="add-food__today-log">
+                  <h3 className="add-food__today-title">Today's log ({allLoggedItems.length} items)</h3>
+                  <div className="add-food__today-list">
+                    {allLoggedItems.map((item, i) => (
+                      <div key={`logged-${i}`} className="add-food__today-item">
+                        <div className="add-food__today-item-info">
+                          <span className="add-food__today-item-name">{item.name}</span>
+                          <span className="add-food__today-item-meal">{MEAL_LABELS[item.mealType]}</span>
+                        </div>
+                        <div className="add-food__today-item-stats">
+                          <span className="add-food__today-item-cals">{Math.round((item.calories || 0) * (item.quantity || 1))} kcal</span>
+                          <div className="add-food__today-item-macros">
+                            <span className="add-food__today-macro add-food__today-macro--p">P{Math.round((item.protein || 0) * (item.quantity || 1))}</span>
+                            <span className="add-food__today-macro add-food__today-macro--f">F{Math.round((item.fat || 0) * (item.quantity || 1))}</span>
+                            <span className="add-food__today-macro add-food__today-macro--c">C{Math.round((item.carbs || 0) * (item.quantity || 1))}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -217,6 +276,16 @@ function AddFood({ initialMeal }) {
           onAdd={handleAddToMeal}
           initialMeal={initialMeal}
         />
+      )}
+
+      {/* Toast */}
+      {toast && (
+        <div className="add-food__toast" id="add-toast">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          {toast}
+        </div>
       )}
     </div>
   );
